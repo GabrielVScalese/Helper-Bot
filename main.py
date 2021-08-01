@@ -6,10 +6,11 @@ import json
 
 client = discord.Client()
 
+# Listas para controle de envio de aviso
 sentNotices = []
 sentNoticesOwner = []
 
-# Verifica se o usuario esta na call atual
+# Verifica se o usuario esta no canal atual
 def userExistsInCurrentUsers (userId, currentUsers):
   for user in currentUsers:
     if userId == user.id:
@@ -34,6 +35,7 @@ def existsUserIdInNotices(userId, channelId):
   
   return False
 
+# Verifica se o monitor existe dentre os avisos enviados
 def existsOwnerIdInNotices (ownerId, channelId):
   for sentNotice in sentNoticesOwner:
     if ownerId == sentNotice['ownerId']:
@@ -41,7 +43,7 @@ def existsOwnerIdInNotices (ownerId, channelId):
   
   return False
 
-# Adiciona um aviso enviado a lista de avisos enviados
+# Adiciona um aviso enviado a lista de avisos enviados de usuario
 def addSentNotice(userId, channelId):
   global sentNotices
 
@@ -52,6 +54,7 @@ def addSentNotice(userId, channelId):
   except:
     sentNotices = []
 
+# Adiciona um aviso enviado a lista de avisos enviados de monitor
 def addSentNoticeOwner(ownerId, channelId):
   global sentNoticesOwner
 
@@ -61,6 +64,7 @@ def addSentNoticeOwner(ownerId, channelId):
   except:
     sentNoticeOwner = []
 
+# Remove um aviso da lista de avisos enviados de monitor
 def removeSentNoticeOwner(ownerId, channelId):
   global sentNoticesOwner
 
@@ -68,6 +72,7 @@ def removeSentNoticeOwner(ownerId, channelId):
     if ownerId == sentNoticeOwner['ownerId'] and channelId == sentNoticeOwner['channelId']:
       sentNoticesOwner.remove(sentNoticeOwner)
 
+# Obter todos canais da monitoria
 def fromJson():
   file = open('./channels.json')
   channels = json.load(file)
@@ -77,17 +82,18 @@ def fromJson():
 channels = fromJson()
 
 # Envia dm para o monitor ou aluno
-async def sendDm(user, title, content, thumbnail=''):
+async def sendToUser(user, title, content, thumbnail=''):
   await user.create_dm()
 
   embed=discord.Embed(title=title, description=content, color=discord.Color.blue())
 
   embed.set_author(name='Bot da Monitoria', icon_url=str(client.user.avatar_url))
   embed.set_thumbnail(url=thumbnail)
+  embed.set_footer(text="Em caso de ausência ou demora, peça ajuda para outro monitor")
 
   await user.send(embed=embed)
 
-# Verifica se a call tem monitor
+# Verifica se o canal tem monitor
 def callContainsHelper(helperId, members):
   for member in members:
     if helperId == member.id:
@@ -97,19 +103,27 @@ def callContainsHelper(helperId, members):
 
 # Avisa monitor sobre algum aluno com duvida
 async def sendToHelper(helper, members):
-  content = f'Olá **{helper.name}**! Existe(m) {len(members)} pessoa(s) esperando sua monitoria: '
+  content = f'Olá **{helper.name}**! Novos alunos estão em sua monitoria.'
 
   string_members = ''
   for i in range(0, len(members)):
     if i != len(members) - 1:
       string_members += f'**{members[i].name}**, '
     else:
-      string_members += f'**{members[i].name}**'
+      string_members += f'**{members[i].name}**.'
 
     i = i + 1
 
-  content += string_members
-  await sendDm(helper, 'Comunicado da Monitoria', content)
+  embed=discord.Embed(title='Comunicado da Monitoria', description=content, color=discord.Color.blue())
+
+  embed.set_author(name='Bot da Monitoria', icon_url=str(client.user.avatar_url))
+
+  embed.add_field(name='Número de alunos', value=len(members), inline=True)
+
+  embed.add_field(name="Alunos", value=string_members)
+
+  await helper.create_dm()
+  await helper.send(embed=embed)
 
 @client.event
 async def on_ready():
@@ -128,16 +142,15 @@ async def called_once_a_day():
         continue
 
       if not callContainsHelper(channel['owner']['id'], vc.members):
-        # helper = await client.fetch_user(channel['owner']['id'])
-
         if not existsOwnerIdInNotices(channel['owner']['id'], channel['id']):
           addSentNoticeOwner(channel['owner']['id'], channel['id'])
-          helper = await client.fetch_user(580902852101406720)
+          helper = await client.fetch_user(580902852101406720) # Provisorio
+          # helper = await client.fetch_user(channel['owner']['id']) -> Original
           await sendToHelper(helper, vc.members)
 
         for member in vc.members:
           if not existsUserIdInNotices(member.id, channel['id']):
-            # await sendDm(member, 'Comunicado da Monitoria', f'Olá **{member.name}**! Já entrei em contato com o **monitor {helper.name}** e logo ele estará aqui.', helper.avatar_url)
+            await sendToUser(member, 'Comunicado da Monitoria', f'Olá **{member.name}**! Já entrei em contato com o **monitor {helper.name}** e logo ele estará aqui.', helper.avatar_url)
 
             addSentNotice(member.id, channel['id'])
 
