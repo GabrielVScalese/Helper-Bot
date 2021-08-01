@@ -143,10 +143,11 @@ async def called_once_a_day():
 
       if not callContainsHelper(channel['owner']['id'], vc.members):
         if not existsOwnerIdInNotices(channel['owner']['id'], channel['id']):
-          addSentNoticeOwner(channel['owner']['id'], channel['id'])
           helper = await client.fetch_user(580902852101406720) # Provisorio
           # helper = await client.fetch_user(channel['owner']['id']) -> Original
           await sendToHelper(helper, vc.members)
+          
+          addSentNoticeOwner(channel['owner']['id'], channel['id'])
 
         for member in vc.members:
           if not existsUserIdInNotices(member.id, channel['id']):
