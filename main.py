@@ -18,7 +18,7 @@ def userExistsInCurrentUsers (userId, currentUsers):
 
   return False
 
-# Atualiza os avisos enviados, retirando um usuario dessa lista, se o mesmo estiver fora da call
+# Atualiza os avisos enviados, retirando um usuario dessa lista, se o mesmo estiver fora do canal
 def updateSentNotices (currentUsers, channelId):
   global sentNotices
 
@@ -81,7 +81,7 @@ def fromJson():
 
 channels = fromJson()
 
-# Envia dm para o monitor ou aluno
+# Envia dm para aluno
 async def sendToUser(user, title, content, thumbnail=''):
   await user.create_dm()
 
@@ -92,14 +92,6 @@ async def sendToUser(user, title, content, thumbnail=''):
   embed.set_footer(text="Em caso de ausência ou demora, peça ajuda para outro monitor")
 
   await user.send(embed=embed)
-
-# Verifica se o canal tem monitor
-def callContainsHelper(helperId, members):
-  for member in members:
-    if helperId == member.id:
-      return True
-
-  return False
 
 # Avisa monitor sobre algum aluno com duvida
 async def sendToHelper(helper, members):
@@ -141,7 +133,7 @@ async def called_once_a_day():
         removeSentNoticeOwner(channel['owner']['id'], channel['id'])
         continue
 
-      if not callContainsHelper(channel['owner']['id'], vc.members):
+      if not userExistsInCurrentUsers(channel['owner']['id'], vc.members):
         if not existsOwnerIdInNotices(channel['owner']['id'], channel['id']):
           helper = await client.fetch_user(580902852101406720) # Provisorio
           # helper = await client.fetch_user(channel['owner']['id']) -> Original
