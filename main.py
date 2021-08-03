@@ -10,6 +10,9 @@ client = discord.Client()
 sentNotices = []
 sentNoticesOwner = []
 
+# Lista para controle de usuarios num canal
+usersDicts = []
+
 # Verifica se o usuario esta no canal atual
 def userExistsInCurrentUsers (userId, currentUsers):
   for user in currentUsers:
@@ -50,7 +53,6 @@ def addSentNotice(userId, channelId):
   try:
     sentNotice = {'userId': userId, 'channelId': channelId}
     sentNotices.append(sentNotice)
-  # Lista atingiu o maximo
   except:
     sentNotices = []
 
@@ -94,25 +96,28 @@ async def sendToUser(user, title, content, thumbnail=''):
   await user.send(embed=embed)
 
 # Avisa monitor sobre algum aluno com duvida
-async def sendToHelper(helper, members):
+async def sendToHelper(helper, users):
   content = f'Olá **{helper.name}**! Novos alunos estão em sua monitoria.'
 
-  string_members = ''
-  for i in range(0, len(members)):
-    if i != len(members) - 1:
-      string_members += f'**{members[i].name}**, '
-    else:
-      string_members += f'**{members[i].name}**.'
+  stringUsers = ''
+  lenMembers = 0
+  for user in users:
+    if user.id == helper.id:
+      continue
 
-    i = i + 1
+    stringUsers += f'**{user.display_name}**, '
+    lenMembers = lenMembers + 1
 
+  stringUsers = stringUsers[:-1]
+  stringUsers = stringUsers[:-1] + '.'
+  
   embed=discord.Embed(title='Comunicado da Monitoria', description=content, color=discord.Color.blue())
 
   embed.set_author(name='Bot da Monitoria', icon_url=str(client.user.avatar_url))
 
-  embed.add_field(name='Número de alunos', value=len(members), inline=True)
+  embed.add_field(name='Número de alunos', value=lenMembers, inline=True)
 
-  embed.add_field(name="Alunos", value=string_members)
+  embed.add_field(name="Alunos", value=stringUsers)
 
   await helper.create_dm()
   await helper.send(embed=embed)
@@ -120,6 +125,30 @@ async def sendToHelper(helper, members):
 @client.event
 async def on_ready():
     print('Bot is running!')
+
+## Teste
+
+def addUsersDict (users, channelId):
+  global usersDicts
+
+  for usersDict in usersInChannel:
+    if usersDict['channelId'] == channelId:
+      usersDict['users'] = users
+      return
+  
+  usersDicts.append({'channelId': channelId, 'users': users})
+
+def findUsersDict (channelId):
+  for usersDict in usersDicts:
+    if usersDict['channelId'] == channelId:
+      return usersDict
+
+def lenUsersDict(channelId): 
+  for usersDict in usersDicts:
+    if usersDict['channelId'] == channelId:
+      return len(usersDict['users'])
+  
+  return 0
 
 @tasks.loop(seconds=1)
 async def called_once_a_day():
@@ -134,22 +163,26 @@ async def called_once_a_day():
         continue
 
       if not userExistsInCurrentUsers(channel['owner']['id'], vc.members):
-        if not existsOwnerIdInNotices(channel['owner']['id'], channel['id']):
-          helper = await client.fetch_user(580902852101406720) # Provisorio
-          # helper = await client.fetch_user(channel['owner']['id']) -> Original
-          await sendToHelper(helper, vc.members)
-          
-          addSentNoticeOwner(channel['owner']['id'], channel['id'])
+        for user in vc.members:
+          if not existsUserIdInNotices(user.id, channel['id']):
+            helper = await client.fetch_user(channel['owner']['id'])
+            await sendToHelper(helper, vc.members)
+        
+            addSentNoticeOwner(channel['owner']['id'], channel['id'])
 
-        for member in vc.members:
-          if not existsUserIdInNotices(member.id, channel['id']):
-            await sendToUser(member, 'Comunicado da Monitoria', f'Olá **{member.name}**! Já entrei em contato com o **monitor {helper.name}** e logo ele estará aqui.', helper.avatar_url)
+            await sendToUser(user, 'Comunicado da Monitoria', f'Olá **{user.display_name}**! Já entrei em contato com o **monitor {helper.display_name}** e logo ele estará aqui.', helper.avatar_url)
 
-            addSentNotice(member.id, channel['id'])
+            addSentNotice(user.id, channel['id'])
 
       else:
-        removeSentNoticeOwner(channel['owner']['id'], channel['id'])
-        print('Helper is on')
+        if lenUsersDict(channel['id']) != len(vc.members):
+          if vc.members[len(vc.members) - 1].id != channel['owner']['id']:
+            addUsersDict(vc.members, channel['id'])
+            helper = await client.fetch_user(channel['owner']['id'])
+            usersDict = findUsersDict(channel['id'])
+            await sendToHelper(helper, usersDict['users'])
+
+        # removeSentNoticeOwner(channel['owner']['id'], channel['id'])
 
   except Exception as e:
     print(e)
