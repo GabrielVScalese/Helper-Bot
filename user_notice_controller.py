@@ -17,6 +17,7 @@ class UserNoticeController:
       self.notices.append(notice)
     except:
       self.notices = []
+      self.notices.append(notice)
 
   def updateNotices (self, channelId, currentUsers):
     for notice in self.notices:
