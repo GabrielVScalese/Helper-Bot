@@ -1,6 +1,7 @@
 import discord
 from discord.ext import tasks
 import os
+
 from keep_alive import keep_alive
 from sender import Sender
 from reader import Reader
@@ -43,7 +44,7 @@ async def called_once_a_day():
             # helper = await client.fetch_user(channel['owner']['id'])
             helper = await client.fetch_user(580902852101406720)
 
-            await Sender.sendToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helper.name}**! Novos alunos estão em seu canal', currentUsers)
+            await Sender.sendToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helper.name}**! Novos alunos estão em seu canal.', currentUsers)
       
             await Sender.sendToUser(client, user, 'Comunicado da Monitoria', f'Olá **{user.display_name}**! Já entrei em contato com o **monitor {helper.display_name}** e logo ele estará aqui.', helper.avatar_url)
 
@@ -57,7 +58,7 @@ async def called_once_a_day():
             helper = await client.fetch_user(channel['owner']['id'])
             usersChannel = usersChannelController.findUsersChannel(channel['id'])
             
-            await Sender.sendToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helper.name}**! A lista de alunos foi atualizada', usersChannel)
+            await Sender.sendToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helper.display_name}**! A lista de alunos foi atualizada.', usersChannel)
 
   except Exception as e:
     print(e)
