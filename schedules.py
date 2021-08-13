@@ -1,5 +1,26 @@
 import datetime
 import pytz
+from reader import Reader
+
+def convertToDate (timeString):
+  tz = pytz.timezone('America/Sao_Paulo')
+  hour = int(timeString.split(':')[0])
+  minute = int(timeString.split(':')[1])
+  
+  nowDate = datetime.datetime.now(tz)
+  newDate = nowDate.replace(hour=hour, minute=minute, second=0, microsecond=0)
+
+  return newDate
+
+def convertToString(helperName, schedulesGroup):
+  toString = f'Horários de {helperName}:\n\n'
+
+  for day in schedulesGroup:
+    toString += f'\n {day["day"]}:\n'
+    for schedule in day['schedules']:
+      toString += f'\tdas {schedule["start"]} até {schedule["end"]} \n'
+
+  return toString
 
 class Schedules:
 
@@ -8,26 +29,38 @@ class Schedules:
     tz = pytz.timezone('America/Sao_Paulo')
     nowDate = datetime.datetime.now(tz)
 
-    channels = []
+    channels = Reader.readJson('./channels.json')
     for channel in channels:
-      if channel['id'] == helperId:
-        for day in channel['days']:
+      if channel['owner']['id'] == helperId:
+        for day in channel['owner']['days']:
           if nowDate.strftime("%A") == day['day']:
             for schedule in day['schedules']:
-              startHour = int(schedule['start'].split(':')[0])
-              startMinute = int(schedule['start'].split(':')[1])
+              startDate = convertToDate(schedule['start'])
+              endDate = convertToDate(schedule['end'])
 
-              startTime = nowDate.replace(hour=startHour, minute=startMinute, second = 0, microsecond = 0)
-
-              endHour = int(schedule['end'].split(':')[0])
-              endMinute = int(schedule['end'].split(':')[1])
-        
-              endTime = nowDate.replace(hour=endHour, minute=endMinute, second = 0, microsecond = 0)
-
-              if (nowDate >= startTime):
-                if (nowDate <= endTime):
+              if (nowDate >= startDate):
+                if (nowDate <= endDate):
                   return True
               
               return False
         
     return False
+  
+  @staticmethod
+  def findByHelper (helper, toString = False):
+    schedulesGroup = []
+
+    channels = Reader.readJson('./channels.json')
+    for channel in channels:
+      if channel['owner']['id'] == helper.id:
+        for day in channel['owner']['days']:
+          dayToAdd = {'day': day['day'], 'schedules': []}
+          for schedule in day['schedules']:
+            dayToAdd['schedules'].append({'start': schedule['start'], 'end': schedule['end']})
+            
+          schedulesGroup.append(dayToAdd)
+    
+    if toString:
+      return convertToString(helper.display_name, schedulesGroup)
+
+    return schedulesGroup

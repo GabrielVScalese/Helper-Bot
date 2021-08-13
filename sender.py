@@ -3,7 +3,7 @@ import discord
 class Sender:
 
   @staticmethod
-  async def sendToUser(client, user, title, content, thumbnail = ''):
+  async def sendEmbedToUser(client, user, title, content, thumbnail = ''):
     await user.create_dm()
 
     embed = discord.Embed(title=title, description=content, color=discord.Color.blue())
@@ -12,12 +12,18 @@ class Sender:
 
     embed.set_thumbnail(url=thumbnail)
 
-    embed.set_footer(text="Em caso de ausência ou demora, peça ajuda para outro monitor")
+    # embed.set_footer(text="Em caso de ausência ou demora, peça ajuda para outro monitor")
 
     await user.send(embed=embed)
+  
+  @staticmethod
+  async def sendMessageToUser (client, user, content):
+    await user.create_dm()
+
+    await user.send(content)
 
   @staticmethod
-  async def sendToHelper(client, helper, title, content, users):
+  async def sendEmbedToHelper(client, helper, title, content, users):
     stringUsers = ''
     lenMembers = 0
     for user in users:
