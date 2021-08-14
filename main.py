@@ -39,14 +39,14 @@ async def called_once_a_day():
       if len(currentUsers) == 0:
         continue
 
+      helper = await client.fetch_user(channel['owner']['id'])
+      helperName = channel['owner']['name']
+
       if Schedules.verifyNow(channel['owner']['id']):
         if not existsInChannel(channel['owner']['id'], currentUsers):
           for user in currentUsers:
             if not userNoticeController.existsUser(user.id, channel['id']):
-              # helper = await client.fetch_user(channel['owner']['id'])
-              helper = await client.fetch_user(580902852101406720)
-
-              await Sender.sendEmbedToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helper.display_name}**! Novos alunos estão em seu canal.', currentUsers)
+              await Sender.sendEmbedToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helperName}**! Novos alunos estão em seu canal.', currentUsers)
         
               await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Olá **{user.display_name}**! Já entrei em contato com o **monitor {helper.display_name}** e logo ele estará aqui.', helper.avatar_url)
 
@@ -56,20 +56,17 @@ async def called_once_a_day():
           if usersChannelController.lenUsersChannel(channel['id']) != len(currentUsers):
             usersChannelController.addUsersChannel(channel['id'], currentUsers)
 
-            helper = await client.fetch_user(channel['owner']['id'])
             usersChannel = usersChannelController.findUsersChannel(channel['id'])
             
-            await Sender.sendEmbedToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helper.display_name}**! A lista de alunos foi atualizada.', usersChannel)
+            await Sender.sendEmbedToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helperName}**! A lista de alunos foi atualizada.', usersChannel)
 
       else:
         for user in currentUsers:
           if not userNoticeController.existsUser(user.id, channel['id']):
             if user.id != channel['owner']['id']:
-              helper = await client.fetch_user(channel['owner']['id'])
-              # helper = await client.fetch_user(580902852101406720)
               schedulesGroup = Schedules.findByHelper(helper, toString = True)
 
-              await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Infelizmente, o **monitor {helper.display_name}** não atende monitoria neste momento. Confira abaixo todos **horários** desse monitor:', thumbnail = helper.avatar_url)
+              await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Infelizmente, o **monitor {helperName}** não atende monitoria neste momento. Confira abaixo todos **horários** desse monitor:', thumbnail = helper.avatar_url)
 
               await Sender.sendMessageToUser(client, user, f'```{schedulesGroup}```')
 

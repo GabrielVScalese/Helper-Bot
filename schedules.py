@@ -13,8 +13,8 @@ def convertToDate (timeString):
   return newDate
 
 def convertToString(helperName, schedulesGroup):
-  toString = f'Horários de {helperName}:\n\n'
-
+  toString = ''
+  
   for day in schedulesGroup:
     toString += f'\n {day["day"]}:\n'
     for schedule in day['schedules']:
