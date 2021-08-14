@@ -68,7 +68,7 @@ async def called_once_a_day():
 
               await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Infelizmente, o **monitor {helperName}** não atende monitoria neste momento. Confira abaixo todos **horários** desse monitor:', thumbnail = helper.avatar_url)
 
-              await Sender.sendMessageToUser(client, user, f'```{schedulesGroup}```')
+              await Sender.sendMessageToUser(user, f'```{schedulesGroup}```')
 
               userNoticeController.addNotice(user.id, channel['id'])
 
