@@ -12,7 +12,7 @@ def convertToDate (timeString):
 
   return newDate
 
-def convertToString(helperName, schedulesGroup):
+def convertToString(schedulesGroup):
   toString = ''
   
   for day in schedulesGroup:
@@ -61,6 +61,6 @@ class Schedules:
           schedulesGroup.append(dayToAdd)
     
     if toString:
-      return convertToString(helper.display_name, schedulesGroup)
+      return convertToString(schedulesGroup)
 
     return schedulesGroup
