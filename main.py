@@ -23,6 +23,8 @@ def existsInChannel (userId, currentUsers):
 
   return False
 
+teacherId = 692501687310483517
+
 @client.event
 async def on_ready():
     print('Bot is running!')
@@ -45,12 +47,13 @@ async def called_once_a_day():
       if Schedules.verifyNow(channel['owner']['id']):
         if not existsInChannel(channel['owner']['id'], currentUsers):
           for user in currentUsers:
-            if not userNoticeController.existsUser(user.id, channel['id']):
-              await Sender.sendEmbedToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helperName}**! Novos alunos estão em seu canal.', currentUsers)
-        
-              await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Olá **{user.display_name}**! Já entrei em contato com o **monitor {helper.display_name}** e logo ele estará aqui.', helper.avatar_url)
+            if user.id != teacherId:
+              if not userNoticeController.existsUser(user.id, channel['id']):
+                await Sender.sendEmbedToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helperName}**! Novos alunos estão em seu canal.', currentUsers)
+          
+                await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Olá **{user.display_name}**! Já entrei em contato com o **monitor {helper.display_name}** e logo ele estará aqui.', helper.avatar_url)
 
-              userNoticeController.addNotice(user.id, channel['id'])
+                userNoticeController.addNotice(user.id, channel['id'])
 
         else:
           if usersChannelController.lenUsersChannel(channel['id']) != len(currentUsers):
@@ -62,15 +65,16 @@ async def called_once_a_day():
 
       else:
         for user in currentUsers:
-          if not userNoticeController.existsUser(user.id, channel['id']):
-            if user.id != channel['owner']['id']:
-              schedulesGroup = Schedules.findByHelper(helper, toString = True)
+          if user.id != teacherId:
+            if not userNoticeController.existsUser(user.id, channel['id']):
+              if user.id != channel['owner']['id']:
+                schedulesGroup = Schedules.findByHelper(helper, toString = True)
 
-              await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Infelizmente, o **monitor {helperName}** não atende monitoria neste momento. Confira abaixo todos **horários** desse monitor:', thumbnail = helper.avatar_url)
+                await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Infelizmente, o **monitor {helperName}** não atende monitoria neste momento. Confira abaixo todos **horários** desse monitor:', thumbnail = helper.avatar_url)
 
-              await Sender.sendMessageToUser(user, f'```{schedulesGroup}```')
+                await Sender.sendMessageToUser(user, f'```{schedulesGroup}```')
 
-              userNoticeController.addNotice(user.id, channel['id'])
+                userNoticeController.addNotice(user.id, channel['id'])
 
   except Exception as e:
     print(e)
