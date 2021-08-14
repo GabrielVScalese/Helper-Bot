@@ -65,11 +65,11 @@ async def called_once_a_day():
         for user in currentUsers:
           if not userNoticeController.existsUser(user.id, channel['id']):
             if user.id != channel['owner']['id']:
-              # helper = await client.fetch_user(channel['owner']['id'])
-              helper = await client.fetch_user(580902852101406720)
+              helper = await client.fetch_user(channel['owner']['id'])
+              # helper = await client.fetch_user(580902852101406720)
               schedulesGroup = Schedules.findByHelper(helper, toString = True)
 
-              await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Infelizmente, o monitor {helper.display_name} não atende monitoria neste momento. Confira abaixo todos horários desse monitor:')
+              await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Infelizmente, o **monitor {helper.display_name}** não atende monitoria neste momento. Confira abaixo todos **horários** desse monitor:', thumbnail = helper.avatar_url)
 
               await Sender.sendMessageToUser(client, user, f'```{schedulesGroup}```')
 
