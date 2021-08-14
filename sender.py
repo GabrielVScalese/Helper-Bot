@@ -12,12 +12,10 @@ class Sender:
 
     embed.set_thumbnail(url=thumbnail)
 
-    # embed.set_footer(text="Em caso de ausência ou demora, peça ajuda para outro monitor")
-
     await user.send(embed=embed)
   
   @staticmethod
-  async def sendMessageToUser (client, user, content):
+  async def sendMessageToUser (user, content):
     await user.create_dm()
 
     await user.send(content)
@@ -26,6 +24,7 @@ class Sender:
   async def sendEmbedToHelper(client, helper, title, content, users):
     stringUsers = ''
     lenMembers = 0
+    
     for user in users:
       if user.id == helper.id:
         continue
