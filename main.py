@@ -42,6 +42,7 @@ async def called_once_a_day():
         continue
 
       helper = await client.fetch_user(channel['owner']['id'])
+      print(f'Channel: {channel["owner"]["id"]} | Helper: {helper.id}')
       helperName = channel['owner']['name']
 
       if Schedules.verifyNow(channel['owner']['id']):
@@ -51,7 +52,7 @@ async def called_once_a_day():
               if not userNoticeController.existsUser(user.id, channel['id']):
                 await Sender.sendEmbedToHelper(client, helper, 'Comunicado da Monitoria', f'Olá **{helperName}**! Novos alunos estão em seu canal.', currentUsers)
           
-                await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Olá **{user.display_name}**! Já entrei em contato com o **monitor {helper.display_name}** e logo ele estará aqui.', helper.avatar_url)
+                await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Olá **{user.display_name}**! Já entrei em contato com o **monitor {helperName}** e logo ele estará aqui.', helper.avatar_url)
 
                 userNoticeController.addNotice(user.id, channel['id'])
 

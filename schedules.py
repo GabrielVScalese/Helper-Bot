@@ -28,6 +28,7 @@ class Schedules:
   def verifyNow (helperId):
     tz = pytz.timezone('America/Sao_Paulo')
     nowDate = datetime.datetime.now(tz)
+    print(nowDate)
 
     channels = Reader.readJson('./channels.json')
     for channel in channels:
@@ -41,9 +42,7 @@ class Schedules:
               if (nowDate >= startDate):
                 if (nowDate <= endDate):
                   return True
-              
-              return False
-        
+                      
     return False
   
   @staticmethod
