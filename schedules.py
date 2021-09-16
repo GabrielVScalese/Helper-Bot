@@ -28,8 +28,7 @@ class Schedules:
   def verifyNow (helperId):
     tz = pytz.timezone('America/Sao_Paulo')
     nowDate = datetime.datetime.now(tz)
-    print(nowDate)
-
+    
     channels = Reader.readJson('./channels.json')
     for channel in channels:
       if channel['owner']['id'] == helperId:
@@ -46,7 +45,7 @@ class Schedules:
     return False
   
   @staticmethod
-  def findByHelper (helper, toString = False):
+  def findByHelper (helper):
     schedulesGroup = []
 
     channels = Reader.readJson('./channels.json')
@@ -59,7 +58,25 @@ class Schedules:
             
           schedulesGroup.append(dayToAdd)
     
-    if toString:
-      return convertToString(schedulesGroup)
+  
+    return convertToString(schedulesGroup)
 
-    return schedulesGroup
+  @staticmethod
+  def nowSchedules ():
+    tz = pytz.timezone('America/Sao_Paulo')
+    nowDate = datetime.datetime.now(tz)
+
+    toString = '+ Monitorias hoje: \n'
+    channels = Reader.readJson('./channels.json')
+    
+    for channel in channels:
+      for day in channel['owner']['days']:
+        if day['day'] == nowDate.strftime("%A"):
+          toString += f'\n{channel["owner"]["name"]}:\n'
+          for schedule in day['schedules']:
+            toString += f'\tdas {schedule["start"]} até {schedule["end"]}\n'
+    
+    if toString == '+ Monitorias hoje: \n':
+      return 'Não há monitorias hoje'
+    
+    return toString

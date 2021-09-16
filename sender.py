@@ -8,7 +8,7 @@ class Sender:
 
     embed = discord.Embed(title=title, description=content, color=discord.Color.blue())
 
-    embed.set_author(name='Bot da Monitoria', icon_url=str(client.user.avatar_url))
+    embed.set_author(name='Eve', icon_url=str(client.user.avatar_url))
 
     embed.set_thumbnail(url=thumbnail)
 
@@ -37,7 +37,7 @@ class Sender:
     
     embed=discord.Embed(title=title, description=content, color=discord.Color.blue())
 
-    embed.set_author(name='Bot da Monitoria', icon_url=str(client.user.avatar_url))
+    embed.set_author(name='Eve', icon_url=str(client.user.avatar_url))
 
     embed.add_field(name='Número de alunos', value=lenMembers, inline=True)
 

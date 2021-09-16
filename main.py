@@ -1,5 +1,5 @@
-import discord
-from discord.ext import tasks
+# import discord
+from discord.ext import tasks, commands
 import os
 
 from keep_alive import keep_alive
@@ -9,7 +9,7 @@ from schedules import Schedules
 from user_notice_controller import UserNoticeController
 from users_channel_controller import UsersChannelController
 
-client = discord.Client()
+client = commands.Bot(command_prefix='!')
 
 # Channels and Controllers
 channels = Reader.readJson('./channels.json')
@@ -24,6 +24,12 @@ def existsInChannel (userId, currentUsers):
   return False
 
 teacherId = 692501687310483517
+
+@client.command()
+async def hoje (ctx):
+  nowSchedules = Schedules.nowSchedules()
+
+  await ctx.send(f'```{nowSchedules}```')
 
 @client.event
 async def on_ready():
@@ -42,7 +48,6 @@ async def called_once_a_day():
         continue
 
       helper = await client.fetch_user(channel['owner']['id'])
-      print(f'Channel: {channel["owner"]["id"]} | Helper: {helper.id}')
       helperName = channel['owner']['name']
 
       if Schedules.verifyNow(channel['owner']['id']):
@@ -69,7 +74,7 @@ async def called_once_a_day():
           if user.id != teacherId:
             if not userNoticeController.existsUser(user.id, channel['id']):
               if user.id != channel['owner']['id']:
-                schedulesGroup = Schedules.findByHelper(helper, toString = True)
+                schedulesGroup = Schedules.findByHelper(helper)
 
                 await Sender.sendEmbedToUser(client, user, 'Comunicado da Monitoria', f'Infelizmente, o **monitor {helperName}** não atende monitoria neste momento. Confira abaixo todos **horários** desse monitor:', thumbnail = helper.avatar_url)
 
