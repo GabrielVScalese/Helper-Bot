@@ -120,5 +120,5 @@ async def before():
     await client.wait_until_ready()
 
 called_once_a_day.start()
-keep_alive() 
+# keep_alive() 
 client.run(os.getenv('TOKEN'))
