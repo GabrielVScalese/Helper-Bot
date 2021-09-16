@@ -38,13 +38,13 @@ async def status(ctx):
   await ctx.send(embed=embed)
 
   msg = await client.wait_for("message", check=lambda message: message.author == ctx.author)
+  content = msg.content
 
-  print(msg)
   description = ''
-  if msg == 'off':
+  if content == 'off':
     on = False
     description = f'Meu status agora é **off**'
-  elif msg == 'on':
+  elif content == 'on':
     on = True
     description = f'Meu status agora é **on**'
   else:
