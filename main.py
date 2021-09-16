@@ -13,6 +13,15 @@ client = commands.Bot(command_prefix='!')
 
 on = True
 
+def isHelper (name):
+  channels = Reader.readJson('./channels.json')
+
+  for channel in channels:
+    if channel['owner']['name'] == name:
+      return True
+  
+  return False
+
 # Channels and Controllers
 channels = Reader.readJson('./channels.json')
 userNoticeController = UserNoticeController()
@@ -30,6 +39,9 @@ teacherId = 692501687310483517
 @client.command()
 async def status(ctx):
   global on
+
+  if not isHelper(ctx.author):
+    return
 
   embed = discord.Embed(title='Comunicado da Monitoria', description='Defina meu status (escreva **on** ou **off**)', color=discord.Color.blue())
 
