@@ -2,7 +2,6 @@ import discord
 from discord.ext import tasks, commands
 import os
 
-from keep_alive import keep_alive
 from sender import Sender
 from reader import Reader
 from schedules import Schedules
