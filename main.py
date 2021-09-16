@@ -2,7 +2,6 @@
 from discord.ext import tasks, commands
 import os
 
-from keep_alive import keep_alive
 from sender import Sender
 from reader import Reader
 from schedules import Schedules
@@ -90,5 +89,4 @@ async def before():
     await client.wait_until_ready()
 
 called_once_a_day.start()
-keep_alive() 
 client.run(os.getenv('TOKEN'))
