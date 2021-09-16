@@ -31,7 +31,7 @@ teacherId = 692501687310483517
 async def status(ctx):
   global on
 
-  embed = discord.Embed(title='Comunicado da Monitoria', description='Defina meu status', color=discord.Color.blue())
+  embed = discord.Embed(title='Comunicado da Monitoria', description='Defina meu status (escreva **on** ou **off**)', color=discord.Color.blue())
 
   embed.set_author(name='Eve', icon_url=str(client.user.avatar_url))
   
@@ -58,9 +58,10 @@ async def status(ctx):
 
 @client.command()
 async def hoje (ctx):
-  nowSchedules = Schedules.nowSchedules()
+  if on == True:
+    nowSchedules = Schedules.nowSchedules()
 
-  await ctx.send(f'```{nowSchedules}```')
+    await ctx.send(f'```{nowSchedules}```')
 
 @client.event
 async def on_ready():
