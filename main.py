@@ -1,7 +1,8 @@
-# import discord
+import discord
 from discord.ext import tasks, commands
 import os
 
+from keep_alive import keep_alive
 from sender import Sender
 from reader import Reader
 from schedules import Schedules
@@ -9,6 +10,8 @@ from user_notice_controller import UserNoticeController
 from users_channel_controller import UsersChannelController
 
 client = commands.Bot(command_prefix='!')
+
+on = True
 
 # Channels and Controllers
 channels = Reader.readJson('./channels.json')
@@ -23,6 +26,25 @@ def existsInChannel (userId, currentUsers):
   return False
 
 teacherId = 692501687310483517
+
+@client.command()
+async def status(ctx):
+  global on
+
+  embed = discord.Embed(title='Comunicado da Monitoria', description='Defina meu status', color=discord.Color.blue())
+
+  embed.set_author(name='Eve', icon_url=str(client.user.avatar_url))
+  
+  await ctx.send(embed=embed)
+
+  msg = await client.wait_for("message", check=lambda message: message.author == ctx.author)
+
+  if msg == 'off':
+    on = False
+  else:
+    on = True
+
+  await ctx.send('Status modificado  ✅')
 
 @client.command()
 async def hoje (ctx):
@@ -89,4 +111,5 @@ async def before():
     await client.wait_until_ready()
 
 called_once_a_day.start()
+keep_alive() 
 client.run(os.getenv('TOKEN'))
