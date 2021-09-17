@@ -40,26 +40,17 @@ def existsInChannel (userId, currentUsers):
 teacherId = 692501687310483517
 
 @client.command()
-async def status(ctx):
+async def status(ctx, message):
   global on
 
   if not isHelper(ctx.message.author.id):
     return
 
-  embed = discord.Embed(title='Comunicado da Monitoria', description='Defina meu status (escreva **on** ou **off**)', color=discord.Color.blue())
-
-  embed.set_author(name='Eve', icon_url=str(client.user.avatar_url))
-  
-  await ctx.send(embed=embed)
-
-  msg = await client.wait_for("message", check=lambda message: message.author == ctx.author)
-  content = msg.content
-
   description = ''
-  if content == 'off':
+  if message == 'off':
     on = False
     description = f'Meu status agora é **off**'
-  elif content == 'on':
+  elif message == 'on':
     on = True
     description = f'Meu status agora é **on**'
   else:
