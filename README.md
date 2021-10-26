@@ -12,10 +12,6 @@
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/oJPBarbosa/wall-e.svg">
   </a>
 
-  <a href="https://github.com/oJPBarbosa/wall-e/blob/main/LICENSE">
-    <img alt="GitHub" src="https://img.shields.io/github/license/oJPBarbosa/wall-e.svg">
-  </a>
-
   <a href="https://www.codacy.com/gh/oJPBarbosa/wall-e/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=oJPBarbosa/wall-e&amp;utm_campaign=Badge_Grade">
     <img alt="Codacy Badge" src="https://app.codacy.com/project/badge/Grade/2e2954cf5f7145c3933c9da3078f1d00">
   </a>
