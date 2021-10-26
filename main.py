@@ -48,20 +48,24 @@ teacherId = 692501687310483517
 async def status(ctx, message):
   global on
 
-  if not isHelper(ctx.message.author.id):
-    return
-
   description = ''
+  color = None
+  if not isHelper(ctx.message.author.id):
+    description = 'Você não tem permissão para definir o status do bot!'
+    color = discord.Color.red()
+
   if message == 'off':
     on = False
     description = f'Meu status agora é **off**'
+    color = discord.Color.orange()
   elif message == 'on':
     on = True
     description = f'Meu status agora é **on**'
+    color = discord.Color.green()
   else:
     description = f'Meu status não foi modificado'
 
-  embed = discord.Embed(title='Comunicado da Monitoria', description=description, color=discord.Color.blue())
+  embed = discord.Embed(title='Comunicado da Monitoria', description=description, color=color)
 
   embed.set_author(name='WALL-E', icon_url=str(client.user.avatar_url))
 
