@@ -12,12 +12,6 @@ from users_channel_controller import UsersChannelController
 
 load_dotenv()
 
-async def client_init():
-  client = commands.Bot(command_prefix='!')
-  await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="!hoje"))
-
-await client_init()
-
 on = True
 
 def isHelper (id):
@@ -79,6 +73,7 @@ async def hoje (ctx):
 @client.event
 async def on_ready():
     print('Bot is running!')
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="!hoje"))
 
 @tasks.loop(seconds=5)
 async def called_once_a_day():
