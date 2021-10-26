@@ -13,7 +13,7 @@
   </a>
 
   <a href="https://github.com/oJPBarbosa/wall-e/blob/main/LICENSE">
-    <img alt="GitHub" src="https://img.shields.io/github/license/oJPBarbosa/oJPBarbosa/wall-e.svg">
+    <img alt="GitHub" src="https://img.shields.io/github/license/oJPBarbosa/wall-e.svg">
   </a>
 
   <a href="https://www.codacy.com/gh/oJPBarbosa/wall-e/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=oJPBarbosa/wall-e&amp;utm_campaign=Badge_Grade">
