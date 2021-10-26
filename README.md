@@ -6,10 +6,10 @@
 <p align="center">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/oJPBarbosa/wall-e.svg">
 
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/oJPBarbosa/oJPBarbosa/wall-e.svg">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/oJPBarbosa/wall-e.svg">
 
   <a href="https://github.com/oJPBarbosa/wall-e/commits/master">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/oJPBarbosa/oJPBarbosa/wall-e.svg">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/oJPBarbosa/wall-e.svg">
   </a>
 
   <a href="https://github.com/oJPBarbosa/oJPBarbosa/wall-e/blob/main/LICENSE">
