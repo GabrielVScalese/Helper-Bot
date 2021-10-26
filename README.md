@@ -20,10 +20,24 @@
 ## Description
 A Discord bot appointed to COTUCA's PADEMT servers.
 
+```bash
+# Clone this repository
+$ git clone https://github.com/oJPBarbosa/wall-e.git
+
+# Go into the repository directory
+$ cd wall-e
+
+# Install the requirements
+$ pip3 install -r requirements.txt 
+
+# Run the app
+$ python main.py
+```
+
 ## References
 
 - [Python](https://www.python.org/)
 - [Discord.py](https://github.com/Rapptz/discord.py)
 
-## Author
+## Authors
 A project made by [Gabriel Scalese](https://github.com/GabrielVScalese) and maintained by [João Pedro F. Barbosa](https://github.com/oJPBarbosa).
