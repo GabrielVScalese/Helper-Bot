@@ -77,7 +77,7 @@ async def hoje (ctx):
 @client.event
 async def on_ready():
     print('Bot is running!')
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{prefix}hoje"))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"a monitoria com {prefix}hoje"))
 
 @tasks.loop(seconds=5)
 async def called_once_a_day():
