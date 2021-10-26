@@ -1,6 +1,7 @@
 import discord
 from discord.ext import tasks, commands
 import os
+from dotenv import load_dotenv
 
 # from keep_alive import keep_alive
 from sender import Sender
@@ -8,6 +9,8 @@ from reader import Reader
 from schedules import Schedules
 from user_notice_controller import UserNoticeController
 from users_channel_controller import UsersChannelController
+
+load_dotenv()
 
 client = commands.Bot(command_prefix='-')
 
@@ -58,7 +61,7 @@ async def status(ctx, message):
 
   embed = discord.Embed(title='Comunicado da Monitoria', description=description, color=discord.Color.blue())
 
-  embed.set_author(name='Eve', icon_url=str(client.user.avatar_url))
+  embed.set_author(name='WALL-E', icon_url=str(client.user.avatar_url))
 
   await ctx.send(embed=embed)
 
@@ -73,7 +76,7 @@ async def hoje (ctx):
 async def on_ready():
     print('Bot is running!')
 
-@tasks.loop(seconds=1)
+@tasks.loop(seconds=5)
 async def called_once_a_day():
   if on == True:
     try:
@@ -123,7 +126,7 @@ async def called_once_a_day():
 
     except Exception as e:
       print(e)
-    
+
 @called_once_a_day.before_loop
 async def before():
     await client.wait_until_ready()
