@@ -16,7 +16,7 @@ async def client_init():
   client = commands.Bot(command_prefix='!')
   await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="!hoje"))
 
-client_init()
+await client_init()
 
 on = True
 
