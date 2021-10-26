@@ -12,7 +12,8 @@ from users_channel_controller import UsersChannelController
 
 load_dotenv()
 
-client = commands.Bot(command_prefix='-')
+client = commands.Bot(command_prefix='!')
+client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="!hoje"))
 
 on = True
 
