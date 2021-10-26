@@ -3,7 +3,6 @@ from discord.ext import tasks, commands
 import os
 from dotenv import load_dotenv
 
-# from keep_alive import keep_alive
 from sender import Sender
 from reader import Reader
 from schedules import Schedules
@@ -18,20 +17,21 @@ client = commands.Bot(command_prefix=prefix)
 
 on = True
 
-def isHelper (id):
-  channels = Reader.readJson('./channels.json')
-
-  if id == 580902852101406720:
+def isHelper(guild, user_roles, id):
+  if id == '580902852101406720' or id == '547861798846464004':
     return True
 
-  for channel in channels:
-    if channel['owner']['id'] == id:
-      return True
+  roles = Reader.readJson('./data/roles.json')
+  helper_role_id = roles[guild]
   
+  for user_role in user_roles:
+    if str(user_role.id) == helper_role_id:
+      return True
+
   return False
 
 # Channels and Controllers
-channels = Reader.readJson('./channels.json')
+channels = Reader.readJson('./data/channels.json')
 userNoticeController = UserNoticeController()
 usersChannelController = UsersChannelController()
 
@@ -50,7 +50,7 @@ async def status(ctx, message):
 
   description = ''
   color = None
-  if not isHelper(ctx.message.author.id):
+  if not isHelper(str(ctx.message.guild.id), ctx.message.author.roles, str(ctx.message.author.id)):
     description = 'Você não tem permissão para definir o status do bot!'
     color = discord.Color.red()
 
@@ -140,5 +140,4 @@ async def before():
     await client.wait_until_ready()
 
 called_once_a_day.start()
-# keep_alive() 
 client.run(os.getenv('TOKEN'))
