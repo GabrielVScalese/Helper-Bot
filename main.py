@@ -54,16 +54,17 @@ async def status(ctx, message):
     description = 'Você não tem permissão para definir o status do bot!'
     color = discord.Color.red()
 
-  if message == 'off':
-    on = False
-    description = f'Meu status agora é **off**'
-    color = discord.Color.orange()
-  elif message == 'on':
-    on = True
-    description = f'Meu status agora é **on**'
-    color = discord.Color.green()
   else:
-    description = f'Meu status não foi modificado'
+    if message == 'off':
+      on = False
+      description = f'Meu status agora é **off**'
+      color = discord.Color.orange()
+    elif message == 'on':
+      on = True
+      description = f'Meu status agora é **on**'
+      color = discord.Color.green()
+    else:
+      description = f'Meu status não foi modificado'
 
   embed = discord.Embed(title='Comunicado da Monitoria', description=description, color=color)
 
