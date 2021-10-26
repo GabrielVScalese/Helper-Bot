@@ -12,7 +12,7 @@
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/oJPBarbosa/wall-e.svg">
   </a>
 
-  <a href="https://github.com/oJPBarbosa/oJPBarbosa/wall-e/blob/main/LICENSE">
+  <a href="https://github.com/oJPBarbosa/wall-e/blob/main/LICENSE">
     <img alt="GitHub" src="https://img.shields.io/github/license/oJPBarbosa/oJPBarbosa/wall-e.svg">
   </a>
 
