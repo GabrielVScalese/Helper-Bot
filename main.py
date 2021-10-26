@@ -9,7 +9,7 @@ from schedules import Schedules
 from user_notice_controller import UserNoticeController
 from users_channel_controller import UsersChannelController
 
-client = commands.Bot(command_prefix='!')
+client = commands.Bot(command_prefix='-')
 
 on = True
 
