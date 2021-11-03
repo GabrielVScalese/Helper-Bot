@@ -33,18 +33,11 @@ def isHelper(guild, user_roles, id):
   return False
 
 def isHelpTime():
-  now = datetime.now()
-  hour = now.hour
-  minute = now.minute
-
   utc_date = datetime.now(timezone.utc)
   BRT = pytz.timezone('Brazil/East')
   brt_time = utc_date.astimezone(BRT).isoformat()
 
   hour, minute = map(int, brt_time[11:16].split(':'))
-
-  print(f'Current hour: {hour}')
-  print(f'Cureent minute: {minute}')
 
   if hour > 10 and minute > 25 or hour < 22 and minute < 35:
     return True
