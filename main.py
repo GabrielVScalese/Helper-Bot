@@ -2,7 +2,8 @@ import discord
 from discord.ext import tasks, commands
 import os
 from dotenv import load_dotenv
-import datetime
+from datetime import datetime, timezone
+import pytz
 
 from sender import Sender
 from reader import Reader
@@ -36,10 +37,16 @@ def isHelpTime():
   hour = now.hour
   minute = now.minute
 
+  utc_date = datetime.now(timezone.utc)
+  BRT = pytz.timezone('Brazil/East')
+  brt_time = utc_date.astimezone(BRT).isoformat()
+
+  hour, minute = map(int, brt_time[11:16].split(':'))
+
   print(f'Current hour: {hour}')
   print(f'Cureent minute: {minute}')
 
-  if hour > 7 and minute > 25 or hour < 22 and minute < 35:
+  if hour > 10 and minute > 25 or hour < 22 and minute < 35:
     return True
 
   return False
@@ -87,7 +94,7 @@ async def status(ctx, message):
   await ctx.send(embed=embed)
 
 @client.command()
-async def hoje (ctx):
+async def hoje(ctx):
   if on == True:
     nowSchedules = Schedules.nowSchedules()
 
