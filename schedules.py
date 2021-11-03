@@ -29,7 +29,7 @@ class Schedules:
     tz = pytz.timezone('America/Sao_Paulo')
     nowDate = datetime.datetime.now(tz)
     
-    channels = Reader.readJson('./channels.json')
+    channels = Reader.readJson('./data/channels.json')
     for channel in channels:
       if channel['owner']['id'] == helperId:
         for day in channel['owner']['days']:
@@ -48,7 +48,7 @@ class Schedules:
   def findByHelper (helper):
     schedulesGroup = []
 
-    channels = Reader.readJson('./channels.json')
+    channels = Reader.readJson('./data/channels.json')
     for channel in channels:
       if channel['owner']['id'] == helper.id:
         for day in channel['owner']['days']:
@@ -67,7 +67,7 @@ class Schedules:
     nowDate = datetime.datetime.now(tz)
 
     toString = '+ Monitorias hoje: \n'
-    channels = Reader.readJson('./channels.json')
+    channels = Reader.readJson('./data/channels.json')
     
     for channel in channels:
       for day in channel['owner']['days']:
