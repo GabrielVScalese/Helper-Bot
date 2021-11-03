@@ -2,6 +2,7 @@ import discord
 from discord.ext import tasks, commands
 import os
 from dotenv import load_dotenv
+import datetime
 
 from sender import Sender
 from reader import Reader
@@ -27,6 +28,16 @@ def isHelper(guild, user_roles, id):
   for user_role in user_roles:
     if str(user_role.id) == helper_role_id:
       return True
+
+  return False
+
+def isHelpTime():
+  now = datetime.datetime.now()
+  hour = now.hour()
+  minute = now.minute()
+
+  if hour > 7 and minute > 25 or hour < 22 and minute < 35:
+    return True
 
   return False
 
@@ -86,7 +97,7 @@ async def on_ready():
 
 @tasks.loop(seconds=5)
 async def called_once_a_day():
-  if on == True:
+  if on == True and isHelpTime() == True:
     try:
       for channel in channels:
         vc = client.get_channel(id=channel['id'])
