@@ -33,7 +33,7 @@ def isHelper(guild, user_roles, id):
   return False
 
 def isHelpTime():
-  now = datetime.datetime.now()
+  now = datetime.now()
   hour = now.hour
   minute = now.minute
 
