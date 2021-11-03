@@ -36,6 +36,9 @@ def isHelpTime():
   hour = now.hour()
   minute = now.minute()
 
+  print(f'Current hour: {hour}')
+  print(f'Cureent minute: {minute}')
+
   if hour > 7 and minute > 25 or hour < 22 and minute < 35:
     return True
 
