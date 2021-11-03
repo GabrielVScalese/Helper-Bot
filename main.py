@@ -33,8 +33,8 @@ def isHelper(guild, user_roles, id):
 
 def isHelpTime():
   now = datetime.datetime.now()
-  hour = now.hour()
-  minute = now.minute()
+  hour = now.hour
+  minute = now.minute
 
   print(f'Current hour: {hour}')
   print(f'Cureent minute: {minute}')
