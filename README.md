@@ -1,6 +1,5 @@
 <p align="center">
-  <img src="https://cdn.discordapp.com/avatars/902599358405562438/12b99b374a675df27babbee10661555f.png">
-  <h1 align="center">WALL-E</h1>
+  <h1 align="center">🧿 WALL-E</h1>
 </p>
 
 <p align="center">
@@ -17,9 +16,10 @@
   </a>
 </p>
 
-## Description
+## 🎯 Description
 A Discord bot appointed to COTUCA's PADEMT servers.
 
+## 🙋 How to use
 ```bash
 # Clone this repository
 $ git clone https://github.com/oJPBarbosa/wall-e.git
@@ -34,10 +34,10 @@ $ pip3 install -r requirements.txt
 $ python main.py
 ```
 
-## References
+## :rocket: Tecnologias
 
 - [Python](https://www.python.org/)
 - [Discord.py](https://github.com/Rapptz/discord.py)
 
-## Authors
+## 🌎 Authors
 A project made by [Gabriel Scalese](https://github.com/GabrielVScalese) and maintained by [João Pedro F. Barbosa](https://github.com/oJPBarbosa).
